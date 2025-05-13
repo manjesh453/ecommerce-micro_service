@@ -1,3 +1,5 @@
 rootProject.name = 'Ecommerce'
 
 include 'users-serve'
+include 'api-gateway'
+include 'server'
