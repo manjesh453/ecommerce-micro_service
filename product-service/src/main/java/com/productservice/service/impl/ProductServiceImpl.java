@@ -51,68 +51,70 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String updateProduct(ProductRequestDto productDto, String fileName, Long productId) throws IOException {
-        Product post = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
-        if (post.getUserId() != productDto.getUserId()) {
+        Product product = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
+        if (product.getUserId() != productDto.getUserId()) {
            throw new DataNotFoundException("You do not have permission to update this product");
         }
-        fileService.deleteImage(path,post.getImageName());
-        post.setTitle(productDto.getTitle());
-        post.setContent(productDto.getContent());
-        post.setImageName(fileName);
-        productRepo.save(post);
+        fileService.deleteImage(path,product.getImageName());
+        product.setTitle(productDto.getTitle());
+        product.setContent(productDto.getContent());
+        product.setImageName(fileName);
+        product.setQuantity(productDto.getQuantity());
+        product.setPrice(productDto.getPrice());
+        productRepo.save(product);
         return "Product has been successfully updated";
     }
 
     @Override
     public String deleteProduct(Long productId) {
-        Product post = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
-        post.setStatus(Status.DELETED);
-        productRepo.save(post);
+        Product product = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
+        product.setStatus(Status.DELETED);
+        productRepo.save(product);
         return "Post has been successfully deleted";
     }
 
     @Override
     public List<ProductResponseDto> getAllProduct() {
-        List<Product> posts = productRepo.findAll();
-        return posts.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
+        List<Product> products = productRepo.findAll();
+        return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
     }
 
     @Override
     public ProductResponseDto getProductById(Long productId) {
-        Product post = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
-        return objectMapper.convertValue(post,ProductResponseDto.class);
+        Product product = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
+        return objectMapper.convertValue(product,ProductResponseDto.class);
     }
 
     @Override
     public List<ProductResponseDto> getProductByCategoryForUsers(Long categoryId) {
-        List<Product> posts = productRepo.findByCategoryIdAndStatus(categoryId,Status.ACTIVE);
-        return posts.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
+        List<Product> products = productRepo.findByCategoryIdAndStatus(categoryId,Status.ACTIVE);
+        return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
     }
 
     @Override
     public List<ProductResponseDto> getProductByCategoryForAdmin(Long categoryId, Status status) {
-        List<Product> posts = productRepo.findByCategoryIdAndStatus(categoryId,status);
-        return posts.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
+        List<Product> products = productRepo.findByCategoryIdAndStatus(categoryId,status);
+        return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
     }
 
     @Override
     public List<ProductResponseDto> getProductByUser(Long userId) {
-        List<Product> posts = productRepo.findByUserId(userId);
-        return posts.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
+        List<Product> products = productRepo.findByUserId(userId);
+        return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
     }
 
     @Override
     public List<ProductResponseDto> searchProductByTitle(String keyword) {
-        List<Product> posts = productRepo.findByKeyword(keyword);
-        return posts.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
+        List<Product> products = productRepo.findByKeyword(keyword);
+        return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
     }
 
 
     @Override
     public List<ProductResponseDto> getProductForUnauthorizedUser() {
         PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<Product> posts = productRepo.findAll(pageRequest);
-        return posts.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
+        Page<Product> products = productRepo.findAll(pageRequest);
+        return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
 
     }
 }

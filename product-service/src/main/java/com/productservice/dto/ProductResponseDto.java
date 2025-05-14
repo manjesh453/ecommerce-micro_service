@@ -16,5 +16,7 @@ public class ProductResponseDto {
 
     private Long categoryId;
 
-    private Long likes;
+    private int quantity;
+
+    private float price;
 }

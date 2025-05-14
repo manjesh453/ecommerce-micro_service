@@ -1,7 +1,6 @@
-package com.productservice.entity;
+package com.cartservice.entity;
 
-
-import com.productservice.shared.Status;
+import com.cartservice.shared.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,11 +10,11 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Product {
+public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate = new Date();
@@ -24,24 +23,11 @@ public class Product {
     private Date lastModifiedDate;
     @Version
     private Long version = 0L;
-
-    @Column(name="product_title")
-    private String title;
-
-    @Column(length=10000)
-    private String content;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    private String imageName;
-
-    private Long categoryId;
-
-    @Column(name="owner_id")
-    private Long userId;
-
+    private String name;
     private int quantity;
-
+    private String imageName;
     private float price;
-
+    @Column(name="customer_Id")
+    public Long userId;
+    public Status status;
 }
