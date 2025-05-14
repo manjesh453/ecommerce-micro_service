@@ -1,7 +1,7 @@
 package com.orderservice.exception;
 
 
-import com.usersserve.dto.ApiResponse;
+import com.orderservice.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
