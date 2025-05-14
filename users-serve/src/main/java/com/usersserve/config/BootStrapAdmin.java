@@ -1,9 +1,10 @@
 package com.usersserve.config;
 
-import com.userservice.entity.Users;
-import com.userservice.repo.UserRepo;
-import com.userservice.shared.Role;
-import com.userservice.shared.Status;
+
+import com.usersserve.entity.Users;
+import com.usersserve.repo.UserRepo;
+import com.usersserve.shared.Role;
+import com.usersserve.shared.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;

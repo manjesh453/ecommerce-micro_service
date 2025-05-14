@@ -1,8 +1,9 @@
 package com.usersserve.security;
 
 
-import com.userservice.security.service.JwtService;
-import com.userservice.security.service.serviceimpl.UserServiceImpls;
+
+import com.usersserve.security.service.JwtService;
+import com.usersserve.security.service.serviceimpl.UserServiceImpls;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

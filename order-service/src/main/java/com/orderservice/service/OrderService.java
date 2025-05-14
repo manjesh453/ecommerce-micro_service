@@ -14,7 +14,3 @@ public interface OrderService {
     List<OrderResponseDto> getAllOrder();
     List<OrderResponseDto> getAllOrdersByDate(Date startDate, Date endDate);
 }
-
-
-String token = (String) RequestContextHolder.currentRequestAttributes()
-        .getAttribute("token", RequestAttributes.SCOPE_REQUEST);

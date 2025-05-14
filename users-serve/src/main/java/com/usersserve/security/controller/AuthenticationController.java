@@ -2,11 +2,11 @@ package com.usersserve.security.controller;
 
 
 
-import com.userservice.security.helper.JwtAuthenticationResponse;
-import com.userservice.security.helper.SignUpRequest;
-import com.userservice.security.helper.SigninRequest;
-import com.userservice.security.service.AuthenticationService;
-import com.userservice.service.UserService;
+import com.usersserve.security.helper.JwtAuthenticationResponse;
+import com.usersserve.security.helper.SignUpRequest;
+import com.usersserve.security.helper.SigninRequest;
+import com.usersserve.security.service.AuthenticationService;
+import com.usersserve.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
