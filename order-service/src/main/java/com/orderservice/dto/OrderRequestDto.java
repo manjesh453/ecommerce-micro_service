@@ -10,4 +10,5 @@ public class OrderRequestDto {
     private String deliveryAddress;
     private Long receiverId;
     private String imageName;
+    private Long productId;
 }

@@ -30,4 +30,6 @@ public interface ProductService {
     List<ProductResponseDto> searchProductByTitle(String keyword);
 
     List<ProductResponseDto> getProductForUnauthorizedUser();
+
+    String decreaseProductQuantity(Long productId, int quantity);
 }

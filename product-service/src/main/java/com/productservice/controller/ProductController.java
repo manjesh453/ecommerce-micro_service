@@ -56,9 +56,9 @@ public class ProductController {
         return productService.getProductByCategoryForUsers(categoryId);
     }
 
-    @GetMapping("/getProductByCategoryForAdmin/{categoryId}")
-    public List<ProductResponseDto> getPostByCategoryForAdmin(@PathVariable Long categoryId, @RequestBody String status) {
-        return productService.getProductByCategoryForAdmin(categoryId, Status.valueOf(status));
+    @PostMapping("/getProductByCategoryForAdmin/{categoryId}")
+    public List<ProductResponseDto> getPostByCategoryForAdmin(@PathVariable Long categoryId, @RequestParam Status status) {
+        return productService.getProductByCategoryForAdmin(categoryId, status);
     }
 
     @GetMapping("/getProductByUser/{userId}")
@@ -86,5 +86,10 @@ public class ProductController {
     @GetMapping("/getAllProducts")
     public List<ProductResponseDto> getAllProducts(){
         return productService.getAllProduct();
+    }
+
+    @GetMapping("/decreaseQuantity/{productId}")
+    public String decreaseProductQuantity(@PathVariable Long productId, @RequestParam Integer quantity) {
+        return productService.decreaseProductQuantity(productId, quantity);
     }
 }

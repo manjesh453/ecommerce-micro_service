@@ -117,4 +117,12 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
 
     }
+
+    @Override
+    public String decreaseProductQuantity(Long productId, int quantity) {
+        Product product = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
+        product.setQuantity(product.getQuantity() - quantity);
+        productRepo.save(product);
+        return "Product has been successfully decreased";
+    }
 }
