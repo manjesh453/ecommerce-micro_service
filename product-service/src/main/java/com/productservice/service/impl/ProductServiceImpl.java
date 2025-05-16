@@ -121,8 +121,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String decreaseProductQuantity(Long productId, int quantity) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ResourcenotFoundException("Product", "productId", productId));
-        product.setQuantity(product.getQuantity() - quantity);
-        productRepo.save(product);
-        return "Product has been successfully decreased";
+        if(product.getQuantity()>=quantity){
+            product.setQuantity(product.getQuantity() - quantity);
+            productRepo.save(product);
+            return "Product has been successfully decreased";
+        }
+        return "Sorry product out of stock";
     }
 }

@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
                 productId,
                 quantity
         );
-        if (!response.getStatusCode().is2xxSuccessful()) {
+        if (!response.getStatusCode().is2xxSuccessful()|| response.getBody().equals("Sorry product out of stock")) {
             return "Cannot place order";
         }
         Orders order = objectMapper.convertValue(requestDto, Orders.class);
