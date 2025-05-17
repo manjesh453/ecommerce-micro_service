@@ -29,16 +29,16 @@ public class ProductController {
     private String path;
 
     @PostMapping("/add")
-    public String createPost(@RequestParam("image") MultipartFile image, @RequestPart ProductRequestDto postDto) throws IOException {
+    public String createPost(@RequestParam("image") MultipartFile image, @RequestPart ProductRequestDto productDto) throws IOException {
         String filename = fileService.uploadImage(path, image);
-        return productService.createProduct(postDto, filename);
+        return productService.createProduct(productDto, filename);
     }
 
     @PostMapping("/update/{productId}")
-    public String updatePost(@RequestPart ProductRequestDto requestDto, @RequestParam("image") MultipartFile image,
+    public String updatePost(@RequestPart ProductRequestDto productDto, @RequestParam("image") MultipartFile image,
                              @PathVariable Long productId) throws IOException {
         String filename = this.fileService.uploadImage(path, image);
-        return productService.updateProduct(requestDto, filename, productId);
+        return productService.updateProduct(productDto, filename, productId);
     }
 
     @GetMapping("/delete/{productId}")
@@ -83,9 +83,9 @@ public class ProductController {
         return productService.getProductForUnauthorizedUser();
     }
 
-    @GetMapping("/getAllProducts")
-    public List<ProductResponseDto> getAllProducts(){
-        return productService.getAllProduct();
+    @GetMapping("/getAllProducts/{status}")
+    public List<ProductResponseDto> getAllProducts(@PathVariable Status status){
+        return productService.getAllProduct(status);
     }
 
     @GetMapping("/decreaseQuantity/{productId}")

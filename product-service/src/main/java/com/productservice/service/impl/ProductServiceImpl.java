@@ -55,7 +55,6 @@ public class ProductServiceImpl implements ProductService {
         if (product.getUserId() != productDto.getUserId()) {
            throw new DataNotFoundException("You do not have permission to update this product");
         }
-        fileService.deleteImage(path,product.getImageName());
         product.setTitle(productDto.getTitle());
         product.setContent(productDto.getContent());
         product.setImageName(fileName);
@@ -74,8 +73,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getAllProduct() {
-        List<Product> products = productRepo.findAll();
+    public List<ProductResponseDto> getAllProduct(Status status) {
+        List<Product> products = productRepo.findByStatus(status);
         return products.stream().map(list -> modelMapper.map(list, ProductResponseDto.class)).toList();
     }
 

@@ -21,6 +21,10 @@ public class FileServiceImpl implements FileService {
         if (!f.exists()) {
             f.mkdir();
         }
+        File imageFile = new File(filePath);
+        if (imageFile.exists()) {
+            return fileName;
+        }
         try {
             Files.copy(file.getInputStream(), Paths.get(filePath));
         }catch (Exception e){

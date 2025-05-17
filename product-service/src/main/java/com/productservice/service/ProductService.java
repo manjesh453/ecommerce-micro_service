@@ -17,7 +17,7 @@ public interface ProductService {
 
     String deleteProduct(Long postId);
 
-    List<ProductResponseDto> getAllProduct();
+    List<ProductResponseDto> getAllProduct(Status statu);
 
     ProductResponseDto getProductById(Long postId);
 

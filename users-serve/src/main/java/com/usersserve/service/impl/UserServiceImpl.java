@@ -1,6 +1,7 @@
 package com.usersserve.service.impl;
 
 
+import com.usersserve.dto.ApiResponse;
 import com.usersserve.dto.ChangePasswordDto;
 import com.usersserve.dto.UserRequestDto;
 import com.usersserve.dto.UserResponseDto;
@@ -15,6 +16,8 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -101,9 +104,9 @@ public class UserServiceImpl implements UserService {
         String subject = MessageConstant.subject;
         String content = "Dear " + customer.getUsername() + "<br>"
                 + "Please click the link below to verify your account:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">"+ customer.getVerificationCode()+"</a></h3>"
+                + "<h3>"+ customer.getVerificationCode()+"</h3>"
                 + "Thank you,<br>"
-                + "Blog Posting.";
+                + "Dilma.";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);

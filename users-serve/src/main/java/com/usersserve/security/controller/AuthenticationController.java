@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,11 +54,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verify")
-    public String verifyEmployee(@Param("code") String code) {
+    public ResponseEntity<Void> verifyEmployee(@Param("code") String code) {
         if (customerService.verify(code)) {
-            return "Verify sucessfully";
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return "verify denied";
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 }

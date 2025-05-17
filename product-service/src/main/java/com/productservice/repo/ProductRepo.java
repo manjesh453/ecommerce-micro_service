@@ -22,4 +22,6 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     List<Product>findByKeyword(String keyword);
 
     Page<Product> findAll(Pageable pageable);
+
+    List<Product> findByStatus(Status status);
 }
