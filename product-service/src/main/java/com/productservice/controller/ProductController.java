@@ -94,7 +94,7 @@ public class ProductController {
         return productService.decreaseProductQuantity(productId, quantity);
     }
 
-    @GetMapping("/status")
+    @GetMapping("/data")
     public Map<String,Integer> countProduct(){
         return productService.countProduct();
     }
