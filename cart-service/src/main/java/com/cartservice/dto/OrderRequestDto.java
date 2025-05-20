@@ -1,4 +1,4 @@
-package com.orderservice.dto;
+package com.cartservice.dto;
 
 import lombok.Data;
 

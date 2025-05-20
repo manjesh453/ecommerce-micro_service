@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/product")
@@ -91,5 +92,10 @@ public class ProductController {
     @GetMapping("/decreaseQuantity/{productId}")
     public String decreaseProductQuantity(@PathVariable Long productId, @RequestParam Integer quantity) {
         return productService.decreaseProductQuantity(productId, quantity);
+    }
+
+    @GetMapping("/status")
+    public Map<String,Integer> countProduct(){
+        return productService.countProduct();
     }
 }

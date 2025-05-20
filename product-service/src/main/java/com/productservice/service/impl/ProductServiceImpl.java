@@ -22,7 +22,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -126,5 +128,14 @@ public class ProductServiceImpl implements ProductService {
             return "Product has been successfully decreased";
         }
         return "Sorry product out of stock";
+    }
+
+    @Override
+    public Map<String, Integer> countProduct() {
+        Map<String,Integer> map = new HashMap<>();
+        map.put("ACTIVE", productRepo.countByStatus(Status.ACTIVE));
+        map.put("INACTIVE", productRepo.countByStatus(Status.INACTIVE));
+        map.put("DELETED", productRepo.countByStatus(Status.DELETED));
+        return map;
     }
 }

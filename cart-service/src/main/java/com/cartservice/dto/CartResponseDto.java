@@ -12,4 +12,5 @@ public class CartResponseDto {
     private String imageName;
     private float price;
     private Status status;
+    public Long productId;
 }

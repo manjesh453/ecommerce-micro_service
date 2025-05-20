@@ -25,8 +25,10 @@ public class Orders {
     private String productName;
     private int quantity;
     private int amount;
-    private String deliveryAddress;
-    private Long receiverId;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String paymentDetail;
+    private Long userId;
     private String imageName;
     private Status status;
 }

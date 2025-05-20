@@ -30,4 +30,5 @@ public class Cart {
     @Column(name="customer_Id")
     public Long userId;
     public Status status;
+    public Long productId;
 }

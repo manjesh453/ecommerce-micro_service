@@ -8,6 +8,7 @@ import com.productservice.shared.Status;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -32,4 +33,6 @@ public interface ProductService {
     List<ProductResponseDto> getProductForUnauthorizedUser();
 
     String decreaseProductQuantity(Long productId, int quantity);
+
+    Map<String,Integer> countProduct();
 }

@@ -8,7 +8,8 @@ public class OrderResponseDto {
     private String productName;
     private int quantity;
     private int amount;
-    private String deliveryAddress;
-    private Long receiverId;
+    private String paymentDetail;
+    private Long userId;
     private String imageName;
+    private String status;
 }

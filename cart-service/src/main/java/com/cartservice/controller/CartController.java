@@ -1,8 +1,8 @@
 package com.cartservice.controller;
 
-import com.cartservice.dto.CartRequestDto;
-import com.cartservice.dto.CartResponseDto;
+import com.cartservice.dto.*;
 import com.cartservice.service.CartService;
+import com.cartservice.shared.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +20,8 @@ public class CartController {
     }
 
     @PostMapping("/update/{cartId}")
-    public String updateCart(@RequestBody int quantity,@PathVariable Long cartId){
-        return cartService.updateCart(quantity,cartId);
+    public String updateCart(@RequestBody UpdateDto quantity, @PathVariable Long cartId){
+        return cartService.updateCart(quantity.getQuantity(), cartId);
     }
 
     @GetMapping("/delete/{cartId}")
@@ -45,7 +45,11 @@ public class CartController {
     }
 
     @PostMapping("/carts/byStatus/{customerId}")
-    public List<CartResponseDto> getCartByUserIdAndStatus(@PathVariable Long customerId,@RequestBody String status){
-        return cartService.getCartByCustomerIdAndStatus(customerId,status);
+    public List<CartResponseDto> getCartByUserIdAndStatus(@PathVariable Long customerId,@RequestBody StatusDto status){
+        return cartService.getCartByCustomerIdAndStatus(customerId, status.getStatus());
+    }
+    @PostMapping("/carts/checkout")
+    public String checkout(@RequestBody List<CheckOutDto> requestDtos){
+        return cartService.checkout(requestDtos);
     }
 }

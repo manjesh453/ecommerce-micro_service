@@ -9,6 +9,7 @@ import com.orderservice.repo.OrderRepo;
 import com.orderservice.service.OrderService;
 import com.orderservice.shared.Status;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,11 +25,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepo orderRepo;
     private final ModelMapper modelMapper;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+
     @Override
     public String createOrder(OrderRequestDto requestDto) {
         String token = (String) RequestContextHolder.currentRequestAttributes()
@@ -47,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
                 productId,
                 quantity
         );
-        if (!response.getStatusCode().is2xxSuccessful()|| response.getBody().equals("Sorry product out of stock")) {
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody().equals("Sorry product out of stock")) {
             return "Cannot place order";
         }
         Orders order = objectMapper.convertValue(requestDto, Orders.class);
@@ -60,8 +63,28 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String createBulkOrder(List<OrderRequestDto> requestDtoList) {
-        for(OrderRequestDto orderRequestDto : requestDtoList){
-            Orders order = modelMapper.map(orderRequestDto, Orders.class);
+        for (OrderRequestDto orderRequestDto : requestDtoList) {
+            log.info("Payload: " + orderRequestDto.toString());
+            String token = (String) RequestContextHolder.currentRequestAttributes()
+                    .getAttribute("token", RequestAttributes.SCOPE_REQUEST);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
+            Long productId = orderRequestDto.getProductId();
+            Integer quantity = orderRequestDto.getQuantity();
+            HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+            String url = "http://localhost:8080/api/product/decreaseQuantity/{productId}?quantity={quantity}";
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    httpEntity,
+                    String.class,
+                    productId,
+                    quantity
+            );
+            if (!response.getStatusCode().is2xxSuccessful() || response.getBody().equals("Sorry product out of stock")) {
+                return "Cannot place order";
+            }
+            Orders order = objectMapper.convertValue(orderRequestDto, Orders.class);
             order.setStatus(Status.ORDER_PLACED);
             orderRepo.save(order);
         }
@@ -70,34 +93,34 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto getOrder(Long orderId) {
-       Orders order = orderRepo.findById(orderId).orElseThrow(()->
-               new DataNotFoundException("Order with id " + orderId + " not found"));
-       return modelMapper.map(order, OrderResponseDto.class);
+        Orders order = orderRepo.findById(orderId).orElseThrow(() ->
+                new DataNotFoundException("Order with id " + orderId + " not found"));
+        return modelMapper.map(order, OrderResponseDto.class);
     }
 
     @Override
     public List<OrderResponseDto> getAllOrdersByCustomer(Long customerId) {
-        List<Orders> orders = orderRepo.findByReceiverIdAndStatus(customerId,Status.ORDER_PLACED);
-        return orders.stream().map(li->modelMapper.map(li,OrderResponseDto.class)).toList();
+        List<Orders> orders = orderRepo.findByUserIdAndStatus(customerId, Status.ORDER_PLACED);
+        return orders.stream().map(li -> modelMapper.map(li, OrderResponseDto.class)).toList();
 
     }
 
     @Override
     public List<OrderResponseDto> getAllOrder() {
         List<Orders> orders = orderRepo.findAll();
-        return orders.stream().map(li->modelMapper.map(li,OrderResponseDto.class)).toList();
+        return orders.stream().map(li -> modelMapper.map(li, OrderResponseDto.class)).toList();
     }
 
     @Override
     public List<OrderResponseDto> getAllOrdersByDate(Date startDate, Date endDate) {
         List<Orders> orders = orderRepo.findByCreatedDateBetween(startDate, endDate);
-        return orders.stream().map(li->modelMapper.map(li,OrderResponseDto.class)).toList();
+        return orders.stream().map(li -> modelMapper.map(li, OrderResponseDto.class)).toList();
 
     }
 
     @Override
     public String updateOrderStatus(Long orderId, Status status) {
-        Orders order = orderRepo.findById(orderId).orElseThrow(()->
+        Orders order = orderRepo.findById(orderId).orElseThrow(() ->
                 new DataNotFoundException("Order with id " + orderId + " not found"));
         order.setStatus(status);
         orderRepo.save(order);
@@ -106,8 +129,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderResponseDto> getAllOrdersByReceiverId(Long receiverId) {
-        List<Orders> orders = orderRepo.findByReceiverId(receiverId);
-        return orders.stream().map(li->modelMapper.map(li,OrderResponseDto.class)).toList();
+        List<Orders> orders = orderRepo.findByUserId(receiverId);
+        return orders.stream().map(li -> modelMapper.map(li, OrderResponseDto.class)).toList();
 
     }
 }
